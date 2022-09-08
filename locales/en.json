@@ -1,0 +1,12 @@
+{
+  "helloWorld": "🎉 %VAR% is online",
+  "compressInProgress": "[%VAR%] Compressing %VAR%...",
+  "folderDeletedSuccessfully": "Folder %VAR% n°%VAR% has been successfully deleted.",
+  "channelIsMissing": "🤖 Mission cancelled, cannot found the channel named %VAR% in the server [%VAR%]",
+  "sending": "Sending on %VAR%'s channel...",
+  "abortFiles": "%VAR% images couldn't be uploaded, retrying...",
+  "abortFile": "%VAR% image couldn't be uploaded, retrying...",
+  "cantSendFile": "Can't upload %VAR%, giving up.",
+  "fileSendedSuccessfully": "%VAR% images sended\tChannel: %VAR%\tServer: %VAR%\n",
+  "finished": "🤖 Daily task accomplished 🚀"
+}

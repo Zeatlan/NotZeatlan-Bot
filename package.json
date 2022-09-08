@@ -1,0 +1,20 @@
+{
+  "name": "notzeatlan-bot",
+  "version": "1.0.0",
+  "description": "Discord bot to send images automatically on servers.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["DiscordJS", "Bot", "Images", "Automated task"],
+  "author": "Zeatlan",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "consola": "^2.15.3",
+    "discord.js": "^14.3.0",
+    "dotenv": "^16.0.2",
+    "sharp": "^0.31.0"
+  }
+}
