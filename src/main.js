@@ -4,9 +4,10 @@ import { Client, GatewayIntentBits, Guild, TextChannel } from 'discord.js';
 import path from 'path';
 import { readdir, rm, rename } from 'fs/promises';
 import sharp from 'sharp';
-import config from './config.js'
+import { config } from './config.js'
 import getLocale from './languagesHandler.js'
 import inquirer from 'inquirer'
+import $ from "../package.json" assert {type: "json"}
 
 dotenv.config();
 
@@ -167,7 +168,7 @@ const sendFiles = async (guild, channel, files, abortedFiles) => {
   consola.success(getLocale('fileSendedSuccessfully', files.length, channel.name, guild.name))
 }
 
-const sendTheSauce = async () => {
+export const sendTheSauce = async () => {
   // NSFW 😈
   await initializeFiles(config.NSFW_FOLDER, 'nsfw');
   
@@ -205,44 +206,59 @@ const sendTheSauce = async () => {
   client.destroy();
 }
 
+const startMenu = async () => {
+  const allGuildsAvailable = client.guilds.cache.map(g => new Object({name: g.name, id: g.id})).filter(g => !config.ignoredGuilds.includes(g.id))
 
-// ? Listener, client is ON and we directly sending everything
-client.on('ready', async () => {
-  consola.success(getLocale('helloWorld', client.user.tag))
-
-  client.user.setPresence({ activities: [{  name: 'Roi de la glandouille' }], status: 'dnd'})
-
-  const allGuildsAvailable =client.guilds.cache.map(g => new Object({name: g.name, id: g.id})).filter(g => !config.ignoredGuilds.includes(g.id))
-
-  let guildsNames = '';
-  for(let i = 0; i < allGuildsAvailable.length; i++) {
-    if(allGuildsAvailable[i+1]) {
-      guildsNames += allGuildsAvailable[i].name + ' | ';
-    }else {
-      guildsNames += allGuildsAvailable[i].name;
-    }
-  }
-
-  inquirer.prompt([
+  const answers = await inquirer.prompt([
     {
       type: 'list',
       name: 'action',
       message: getLocale('helloAction'),
-      choices: [getLocale('start', guildsNames), getLocale('quit')]
+      choices: [getLocale('start', allGuildsAvailable.map(g => g.name).join(', ')), getLocale('quit')]
     }
-  ]).then(async (answers) => {
-    // Send images
-    if(answers.action === getLocale('start', guildsNames)) {
-      await sendTheSauce();
-    }
+  ])
 
-    // Quit
-    if(answers.action === getLocale('quit')) {
-      console.log('\x1b[33m'+getLocale('goodBye')+'\x1b[0m');
-      client.destroy();
-    }
-  })
+  // Send images
+  if(answers.action === getLocale('start', allGuildsAvailable.map(g => g.name).join(', '))) {
+    await confirm();
+  }
 
+  // Quit
+  if(answers.action === getLocale('quit')) {
+    console.log('\x1b[33m'+getLocale('goodBye')+'\x1b[0m');
+    client.destroy();
+  }
+}
+
+const confirm = async () => {
+  const searchFolderNSFW = await getDirectories(config.NSFW_FOLDER)
+  const folderNSFW = path.resolve(config.NSFW_FOLDER, searchFolderNSFW[0]);
+
+  const searchFolderSFW = await getDirectories(config.SFW_FOLDER)
+  const folderSFW = path.resolve(config.SFW_FOLDER, searchFolderSFW[0]);
+
+  const answers = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'confirm',
+      message: getLocale('confirmStart', '\x1b[36m'+folderSFW +'\x1b[0m', '\x1b[31m' + folderNSFW +'\x1b[0m'),
+      choices: [getLocale('yes'), getLocale('no')]
+    }
+  ])
+
+  console.log();
+
+  if(answers.confirm === getLocale('yes')) await sendTheSauce();
+  else startMenu()
+}
+
+// ? Listener, client is ON and we directly sending everything
+client.on('ready', async () => {
+  console.log('\n\x1b[34m'+getLocale('helloWorld', client.user.tag, $.version)+'\x1b[0m\n')
+
+  client.user.setPresence({ activities: [{  name: 'Roi de la glandouille' }], status: 'dnd'})
+
+  startMenu(client);
 });
 
 

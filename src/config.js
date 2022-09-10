@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // * CONFIG
-const config = {
+export const config = {
   // Put id guild to ignore it
   ignoredGuilds: ['868516388883554325'],
   
@@ -26,5 +26,3 @@ const config = {
   // Availables : fr | en
   LANGUAGE: 'en',
 }
-
-export default config;

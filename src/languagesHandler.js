@@ -1,6 +1,6 @@
 import fr from "../locales/fr.json" assert {type: "json"}
 import en from "../locales/en.json" assert {type: "json"}
-import config from "../src/config.js";
+import { config } from "../src/config.js";
 
 let strings = {
   fr: fr,
