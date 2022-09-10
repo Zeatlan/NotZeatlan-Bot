@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 // * CONFIG
 const config = {
   // Put id guild to ignore it
-  ignoredGuilds: ['227503022987542528'],
+  ignoredGuilds: ['868516388883554325'],
   
   // Folders location
   SFW_FOLDER: path.resolve(__dirname, '../../../../Pictures/[FAE]ToSend/SFW/'),
@@ -24,7 +24,7 @@ const config = {
 
   // Choose console language
   // Availables : fr | en
-  LANGUAGE: 'fr',
+  LANGUAGE: 'en',
 }
 
 export default config;

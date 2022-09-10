@@ -6,6 +6,7 @@ import { readdir, rm, rename } from 'fs/promises';
 import sharp from 'sharp';
 import config from './config.js'
 import getLocale from './languagesHandler.js'
+import inquirer from 'inquirer'
 
 dotenv.config();
 
@@ -166,13 +167,7 @@ const sendFiles = async (guild, channel, files, abortedFiles) => {
   consola.success(getLocale('fileSendedSuccessfully', files.length, channel.name, guild.name))
 }
 
-
-// ? Listener, client is ON and we directly sending everything
-client.on('ready', async () => {
-  consola.success(getLocale('helloWorld', client.user.tag))
-
-  client.user.setPresence({ activities: [{  name: 'Roi de la glandouille' }], status: 'dnd'})
-
+const sendTheSauce = async () => {
   // NSFW 😈
   await initializeFiles(config.NSFW_FOLDER, 'nsfw');
   
@@ -208,6 +203,46 @@ client.on('ready', async () => {
   // See you next time ❤
   consola.success(getLocale('finished'))
   client.destroy();
+}
+
+
+// ? Listener, client is ON and we directly sending everything
+client.on('ready', async () => {
+  consola.success(getLocale('helloWorld', client.user.tag))
+
+  client.user.setPresence({ activities: [{  name: 'Roi de la glandouille' }], status: 'dnd'})
+
+  const allGuildsAvailable =client.guilds.cache.map(g => new Object({name: g.name, id: g.id})).filter(g => !config.ignoredGuilds.includes(g.id))
+
+  let guildsNames = '';
+  for(let i = 0; i < allGuildsAvailable.length; i++) {
+    if(allGuildsAvailable[i+1]) {
+      guildsNames += allGuildsAvailable[i].name + ' | ';
+    }else {
+      guildsNames += allGuildsAvailable[i].name;
+    }
+  }
+
+  inquirer.prompt([
+    {
+      type: 'list',
+      name: 'action',
+      message: getLocale('helloAction'),
+      choices: [getLocale('start', guildsNames), getLocale('quit')]
+    }
+  ]).then(async (answers) => {
+    // Send images
+    if(answers.action === getLocale('start', guildsNames)) {
+      await sendTheSauce();
+    }
+
+    // Quit
+    if(answers.action === getLocale('quit')) {
+      console.log('\x1b[33m'+getLocale('goodBye')+'\x1b[0m');
+      client.destroy();
+    }
+  })
+
 });
 
 

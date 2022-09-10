@@ -1,5 +1,8 @@
 {
   "helloWorld": "🎉 %VAR% is online",
+  "helloAction": "What do you want to do",
+  "start": "Send images on servers : %VAR%",
+  "quit": "Quit the program",
   "compressInProgress": "[%VAR%] Compressing %VAR%...",
   "folderDeletedSuccessfully": "Folder %VAR% n°%VAR% has been successfully deleted.",
   "channelIsMissing": "🤖 Mission cancelled, cannot found the channel named %VAR% in the server [%VAR%]",
@@ -8,5 +11,6 @@
   "abortFile": "%VAR% image couldn't be uploaded, retrying...",
   "cantSendFile": "Can't upload %VAR%, giving up.",
   "fileSendedSuccessfully": "%VAR% images sended\tChannel: %VAR%\tServer: %VAR%\n",
-  "finished": "🤖 Daily task accomplished 🚀"
+  "finished": "🤖 Daily task accomplished 🚀",
+  "goodBye": "👋 Closing program, see you next time"
 }

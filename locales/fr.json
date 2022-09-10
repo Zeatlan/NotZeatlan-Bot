@@ -1,5 +1,8 @@
 {
   "helloWorld": "🎉 %VAR% est en ligne",
+  "helloAction": "Que souhaitez-vous faire ?",
+  "start": "Envoyer les images sur les serveurs : %VAR%",
+  "quit": "Quitter le programme",
   "compressInProgress": "[%VAR%] Compression de %VAR%...",
   "folderDeletedSuccessfully": "Dossier %VAR% n°%VAR% supprimé avec succès.",
   "channelIsMissing": "🤖 Mission annulée, impossible de trouver le channel %VAR% sur le serveur [%VAR%]",
@@ -8,5 +11,6 @@
   "abortFile": "%VAR% image n'a pas pu être envoyée, re-envoie en cours...",
   "cantSendFile": "Impossible d'envoyer l'image %VAR%, abandon.",
   "fileSendedSuccessfully": "%VAR% images envoyées\tChannel: %VAR%\tServeur: %VAR%\n",
-  "finished": "🤖 Mission du jour accomplie 🚀"
+  "finished": "🤖 Mission du jour accomplie 🚀",
+  "goodBye": "👋 Fermeture du programme, à la prochaine"
 }
