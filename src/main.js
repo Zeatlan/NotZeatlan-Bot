@@ -170,10 +170,10 @@ const sendFiles = async (guild, channel, files, abortedFiles) => {
 
 export const sendTheSauce = async () => {
   // NSFW 😈
-  await initializeFiles(config.NSFW_FOLDER, 'nsfw');
+  if(config.ignoredFolder !== 'NSFW') await initializeFiles(config.NSFW_FOLDER, 'nsfw');
   
   // SFW 😇
-  await initializeFiles(config.SFW_FOLDER, 'sfw');
+  if(config.ignoredFolder !== 'SFW') await initializeFiles(config.SFW_FOLDER, 'sfw');
 
   // Find all guilds
   const guilds =  client.guilds.cache.map(g => g.id);
@@ -189,17 +189,21 @@ export const sendTheSauce = async () => {
 
     if(isChannelMissing(guild, sfwChannel, 'SFW') || isChannelMissing(guild, nsfwChannel, 'NSFW')) return;
 
-    await sendFiles(guild, sfwChannel, SFWFiles, abortedSFWFiles);
+    if(config.ignoredFolder !== 'SFW') await sendFiles(guild, sfwChannel, SFWFiles, abortedSFWFiles);
 
-    await sendFiles(guild, nsfwChannel, NSFWFiles, abortedNSFWFiles);
+    if(config.ignoredFolder !== 'NSFW') await sendFiles(guild, nsfwChannel, NSFWFiles, abortedNSFWFiles);
   }
 
   // Delete folders
-  await rm(SFWFolder, { recursive: true, force: true})
-  consola.success(getLocale('folderDeletedSuccessfully', 'SFW', SFWFolder.split('\\').at(-1)))
+  if(config.ignoredFolder !== 'SFW') {
+    await rm(SFWFolder, { recursive: true, force: true})
+    consola.success(getLocale('folderDeletedSuccessfully', 'SFW', SFWFolder.split('\\').at(-1)))
+  }
   
-  await rm(NSFWFolder, { recursive: true, force: true})
-  consola.success(getLocale('folderDeletedSuccessfully', 'NSFW', SFWFolder.split('\\').at(-1)))
+  if(config.ignoredFolder !== 'NSFW') {
+    await rm(NSFWFolder, { recursive: true, force: true})
+    consola.success(getLocale('folderDeletedSuccessfully', 'NSFW', NSFWFolder.split('\\').at(-1)))
+  }
 
   // See you next time ❤
   consola.success(getLocale('finished'))
@@ -207,6 +211,7 @@ export const sendTheSauce = async () => {
 }
 
 const startMenu = async () => {
+  console.log();
   const allGuildsAvailable = client.guilds.cache.map(g => new Object({name: g.name, id: g.id})).filter(g => !config.ignoredGuilds.includes(g.id))
 
   const answers = await inquirer.prompt([
@@ -214,13 +219,20 @@ const startMenu = async () => {
       type: 'list',
       name: 'action',
       message: getLocale('helloAction'),
-      choices: [getLocale('start', allGuildsAvailable.map(g => g.name).join(', ')), getLocale('quit')]
+      choices: [getLocale('start', allGuildsAvailable.map(g => g.name).join(', ')), 
+      getLocale('editIgnoreFolder') + (config.ignoredFolder !== '' ? ` \x1b[34m[${getLocale('confirmIgnored', config.ignoredFolder)}]\x1b[0m` : ''), 
+      getLocale('quit')]
     }
   ])
 
   // Send images
   if(answers.action === getLocale('start', allGuildsAvailable.map(g => g.name).join(', '))) {
     await confirm();
+  }
+
+  // Ignore folder
+  if(answers.action === getLocale('editIgnoreFolder') || answers.action === getLocale('editIgnoreFolder') + ` \x1b[34m[${getLocale('confirmIgnored', config.ignoredFolder)}]\x1b[0m`) {
+    await ignoreFolderMenu();
   }
 
   // Quit
@@ -241,7 +253,7 @@ const confirm = async () => {
     {
       type: 'list',
       name: 'confirm',
-      message: getLocale('confirmStart', '\x1b[36m'+folderSFW +'\x1b[0m', '\x1b[31m' + folderNSFW +'\x1b[0m'),
+      message: getLocale('confirmStart', (config.ignoredFolder !== 'SFW') ? `\x1b[36m${folderSFW}\x1b[0m` : getLocale('none'), (config.ignoredFolder !== 'NSFW') ? `\x1b[31m${folderNSFW}\x1b[0m` : getLocale('none')),
       choices: [getLocale('yes'), getLocale('no')]
     }
   ])
@@ -252,13 +264,26 @@ const confirm = async () => {
   else startMenu()
 }
 
+const ignoreFolderMenu = async () => {
+  const answers = await inquirer.prompt({
+    type: 'list',
+    name: 'folder',
+    title: getLocale('editIgnoreFolderText'),
+    choices: ['SFW', 'NSFW']
+  })
+
+  config.ignoredFolder = answers.folder;
+
+  startMenu();
+}
+
 // ? Listener, client is ON and we directly sending everything
 client.on('ready', async () => {
-  console.log('\n\x1b[34m'+getLocale('helloWorld', client.user.tag, $.version)+'\x1b[0m\n')
+  console.log('\n\x1b[34m'+getLocale('helloWorld', client.user.tag, $.version)+'\x1b[0m')
 
   client.user.setPresence({ activities: [{  name: 'Roi de la glandouille' }], status: 'dnd'})
 
-  startMenu(client);
+  startMenu();
 });
 
 
