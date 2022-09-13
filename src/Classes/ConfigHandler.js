@@ -22,7 +22,7 @@ export default class ConfigHandler {
     this.SFW_FOLDER = sfwFolder;
     this.NSFW_FOLDER = nsfwFolder;
     this.SFW_BIN = sfwBin;
-    this.NSFW_FBIN = nsfwBin;
+    this.NSFW_BIN = nsfwBin;
     this.SFW_NAME = sfwName;
     this.NSFW_NAME = nsfwName;
     this.LANGUAGE = lang;

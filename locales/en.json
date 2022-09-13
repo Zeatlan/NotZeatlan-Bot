@@ -7,6 +7,11 @@
   "no": "No",
   "edit": "Edit parameters (To do if it's your first time)",
   "editText": "Settings",
+  "editIgnoredGuilds": "Edit ignored server",
+  "editIgnoredGuildsText": "Select a server to remove it from the list, click on 'add a server' to ignore a new one",
+  "editIgnoredGuildsAdd": "Add a server",
+  "addIgnoredGuildText": "Enter the name of the server to ignore (Leave blank to abandon)",
+  "addIgnoredGuildError": "Cannot find server named [%VAR%]",
   "editFolders": "Edit the folders where to find the images",
   "editFoldersTextSFW": "Insert the entire path to your SFW folder (Leave empty to not change anything)",
   "editFoldersTextNSFW": "Insert the entire path to your NSFW folder (Leave empty to not change anything)",
@@ -35,5 +40,6 @@
   "fileSendedSuccessfully": "%VAR% images sended\tChannel: %VAR%\tServer: %VAR%\n",
   "finished": "🤖 Daily task accomplished 🚀",
   "backToMenu": "Back to main menu",
+  "backToEdit": "Back to parameters",
   "goodBye": "👋 Closing program, see you next time"
 }

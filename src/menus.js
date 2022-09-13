@@ -3,6 +3,7 @@ import ConfigHandler from './Classes/Confighandler.js';
 import LanguageHandler from './Classes/LanguageHandler.js';
 import MenuManager from './Classes/MenuManager.js'
 import { initFiles, preparingFiles } from './main.js'
+import consola from 'consola';
 
 /**
  * MAIN MENU
@@ -60,7 +61,7 @@ export const confirm = async (client, config, lang, sfw, nsfw) => {
   console.log();
 
   if(confirmation === lang.getText('yes')) await preparingFiles(sfw, nsfw);
-  else mainMenu(client, config, lang)
+  else return Promise.resolve(mainMenu(client, config, lang))
 }
 
 /**
@@ -75,6 +76,7 @@ const menuEdit = async (client, config, lang) => {
     'edit',
     lang.getText('editText'),
     [
+      lang.getText('editIgnoredGuilds'),
       lang.getText('editFolders'),
       lang.getText('editBins'),
       lang.getText('editChannels'),
@@ -82,6 +84,9 @@ const menuEdit = async (client, config, lang) => {
       lang.getText('backToMenu')
     ]
   ).handleMenu();
+
+  // Edit ignored guilds
+  if(editChoice === lang.getText('editIgnoredGuilds')) await menuIgnoredGuilds(client, config, lang);
 
   // Edit Folders
   if(editChoice === lang.getText('editFolders')) await menuFolders(client, config, lang);
@@ -96,8 +101,82 @@ const menuEdit = async (client, config, lang) => {
   if(editChoice === lang.getText('editLang')) await menuLanguage(client, config, lang);
 
   // To main menu
-  if(editChoice === lang.getText('backToMenu')) mainMenu(client, config, lang);
+  if(editChoice === lang.getText('backToMenu')) return Promise.resolve(mainMenu(client, config, lang))
 }
+
+/**
+ * EDIT IGNORED GUILDS
+ * @param {Client} client 
+ * @param {ConfigHandler} config 
+ * @param {LanguageHandler} lang 
+ */
+const menuIgnoredGuilds = async (client, config, lang) => { 
+  let ignoredGuilds = [];
+
+  for(const guildId of config.ignoredGuilds) {
+    ignoredGuilds.push({ 
+      id: client.guilds.cache.get(guildId).id, 
+      name: client.guilds.cache.get(guildId).name 
+    })
+  }
+
+  const action = await new MenuManager(
+    'list',
+    'action',
+    lang.getText('editIgnoredGuildsText'),
+    [
+      lang.getText('editIgnoredGuildsAdd'),
+      ...ignoredGuilds.map(g => g.name),
+      lang.getText('backToEdit')
+    ]
+  ).handleMenu();
+
+  // Add new ignored
+  if(action === lang.getText('editIgnoredGuildsAdd')) await menuAddIgnoredGuild(client, config, lang)
+  
+  // Back to edit
+  if(action === lang.getText('backToEdit')) return Promise.resolve(menuEdit(client, config, lang));
+  
+  const findGuild = ignoredGuilds.filter(g => g.name === action);
+
+  // Delete guild from ignored
+  if(findGuild) {
+    const idx = config.ignoredGuilds.indexOf(findGuild.id);
+    config.ignoredGuilds.splice(idx, 1);
+    await config.parseJson(config);
+  }
+
+  return Promise.resolve(menuIgnoredGuilds(client, config, lang));
+
+}
+
+
+/**
+ * ADD IGNORED GUILDS
+ * @param {Client} client 
+ * @param {ConfigHandler} config 
+ * @param {LanguageHandler} lang 
+ */
+const menuAddIgnoredGuild = async (client, config, lang) => { 
+  const add = await new MenuManager(
+    'input',
+    'add',
+    lang.getText('addIgnoredGuildText'),
+  ).handleMenu()
+
+  if(add !== ''){
+    const guild = client.guilds.cache.find(g => g.name.toLowerCase() === add.toLowerCase());
+
+    if(guild) {
+      config.ignoredGuilds.push(guild.id);
+      await config.parseJson(config);
+    }else {
+      consola.error(lang.getText('addIgnoredGuildError', add))
+    }
+  }
+  return Promise.resolve(menuIgnoredGuilds(client, config, lang));
+}
+
 
 /**
  * EDIT FOLDERS
@@ -127,7 +206,7 @@ const menuFolders = async (client, config, lang) => {
   }
 
   await config.parseJson(config);
-  menuEdit(client, config, lang);
+  return Promise.resolve(menuEdit(client, config, lang));
 }
 
 /**
@@ -158,7 +237,7 @@ const menuBins = async (client, config, lang) => {
   }
 
   await config.parseJson(config);
-  menuEdit(client, config, lang);
+  return Promise.resolve(menuEdit(client, config, lang));
 }
 
 /**
@@ -189,7 +268,7 @@ const menuChannels = async (client, config, lang) => {
   }
 
   await config.parseJson(config);
-  menuEdit(client, config, lang);
+  return Promise.resolve(menuEdit(client, config, lang));
 }
 
 /**
@@ -206,10 +285,12 @@ const menuLanguage = async (client, config, lang) => {
     ['fr', 'en']
   ).handleMenu();
 
-  config.LANGUAGE = langChoice;
-  config.parseJson(config);
   lang.language = langChoice;
-  menuEdit(client, config, lang);
+  
+  config.LANGUAGE = langChoice;
+  await config.parseJson(config);
+
+  return Promise.resolve(menuEdit(client, config, lang));
 }
 
 /**
@@ -229,6 +310,6 @@ const menuIgnoreFolder = async (client, config, lang) => {
   if(ignoreChoice !== lang.getText('dontIgnore')) config.ignoredFolder = ignoreChoice;
   else config.ignoredFolder = '';
 
-  config.parseJson(config);
-  mainMenu(client, config, lang);
+  await config.parseJson(config);
+  return Promise.resolve(mainMenu(client, config, lang));
 }

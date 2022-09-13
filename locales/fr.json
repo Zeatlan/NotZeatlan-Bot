@@ -7,6 +7,11 @@
   "no": "Non",
   "edit": "Editer les paramètres (A faire si c'est la première ouverture)",
   "editText": "Edition des paramètres",
+  "editIgnoredGuilds": "Editer les serveurs ignorés",
+  "editIgnoredGuildsText": "Sélectionner un serveur pour l'enlever de la liste, cliquez sur 'ajouter un serveur' pour en ignorer un nouveau",
+  "editIgnoredGuildsAdd": "Ajouter un serveur",
+  "addIgnoredGuildText": "Inscrire le nom du serveur à ignorer (Laisser vide pour abandonner)",
+  "addIgnoredGuildError": "Impossible de trouver le serveur [%VAR%]",
   "editFolders": "Editer les dossiers où trouver les images",
   "editFoldersTextSFW":"Insérer le chemin entier vers votre dossier SFW (Laisser vide pour ne rien changer)",
   "editFoldersTextNSFW":"Insérer le chemin entier vers votre dossier NSFW (Laisser vider pour ne rien changer)",
@@ -35,5 +40,6 @@
   "fileSendedSuccessfully": "%VAR% images envoyées\tChannel: %VAR%\tServeur: %VAR%\n",
   "finished": "🤖 Mission du jour accomplie 🚀",
   "backToMenu": "Retour au menu principal",
+  "backToEdit": "Retour aux paramètres",
   "goodBye": "👋 Fermeture du programme, à la prochaine"
 }
