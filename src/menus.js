@@ -19,15 +19,15 @@ export const mainMenu = async (client, config, lang) => {
     'main', 
     lang.getText('helloAction'),
     [
-      lang.getText('start', allGuildsAvailable.map(g => g.name).join(', ')), 
+      lang.getText('start', `\x1b[35m${allGuildsAvailable.map(g => g.name).join(', ')}\x1b[0m`), 
       lang.getText('edit'),
       lang.getText('editIgnoreFolder') + (config.ignoredFolder !== '' ? ` \x1b[34m[${lang.getText('confirmIgnored', config.ignoredFolder)}]\x1b[0m` : ''), 
-      lang.getText('quit')
+      `\x1b[31m${lang.getText('quit')}\x1b[0m`
     ]
   ).handleMenu();
 
   // Start
-  if(menuChoice === lang.getText('start', allGuildsAvailable.map(g => g.name).join(', '))) await initFiles(client, config, lang);
+  if(menuChoice === lang.getText('start', `\x1b[35m${allGuildsAvailable.map(g => g.name).join(', ')}\x1b[0m`)) await initFiles(client, config, lang);
 
   // Edit params
   if(menuChoice === lang.getText('edit'))  await menuEdit(client, config, lang);
@@ -38,7 +38,7 @@ export const mainMenu = async (client, config, lang) => {
   }
 
   // Quit
-  if(menuChoice === lang.getText('quit')) {
+  if(menuChoice === `\x1b[31m${lang.getText('quit')}\x1b[0m`) {
     console.log('\x1b[33m'+lang.getText('goodBye')+'\x1b[0m');
     client.destroy();
   }
@@ -81,7 +81,7 @@ const menuEdit = async (client, config, lang) => {
       lang.getText('editBins'),
       lang.getText('editChannels'),
       lang.getText('editLang'),
-      lang.getText('backToMenu')
+      `\x1b[31m${lang.getText('backToMenu')}\x1b[0m`
     ]
   ).handleMenu();
 
@@ -101,7 +101,7 @@ const menuEdit = async (client, config, lang) => {
   if(editChoice === lang.getText('editLang')) await menuLanguage(client, config, lang);
 
   // To main menu
-  if(editChoice === lang.getText('backToMenu')) return Promise.resolve(mainMenu(client, config, lang))
+  if(editChoice === `\x1b[31m${lang.getText('backToMenu')}\x1b[0m`) return Promise.resolve(mainMenu(client, config, lang))
 }
 
 /**
@@ -125,17 +125,17 @@ const menuIgnoredGuilds = async (client, config, lang) => {
     'action',
     lang.getText('editIgnoredGuildsText'),
     [
-      lang.getText('editIgnoredGuildsAdd'),
+      `\x1b[32m${lang.getText('editIgnoredGuildsAdd')}\x1b[0m`,
       ...ignoredGuilds.map(g => g.name),
-      lang.getText('backToEdit')
+      `\x1b[31m${lang.getText('backToEdit')}\x1b[0m`
     ]
   ).handleMenu();
 
   // Add new ignored
-  if(action === lang.getText('editIgnoredGuildsAdd')) await menuAddIgnoredGuild(client, config, lang)
+  if(action === `\x1b[32m${lang.getText('editIgnoredGuildsAdd')}\x1b[0m`) await menuAddIgnoredGuild(client, config, lang)
   
   // Back to edit
-  if(action === lang.getText('backToEdit')) return Promise.resolve(menuEdit(client, config, lang));
+  if(action === `\x1b[31m${lang.getText('backToEdit')}\x1b[0m`) return Promise.resolve(menuEdit(client, config, lang));
   
   const findGuild = ignoredGuilds.filter(g => g.name === action);
 
