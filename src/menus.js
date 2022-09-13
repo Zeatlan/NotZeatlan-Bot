@@ -64,6 +64,9 @@ export const confirm = async (client, config, lang, sfw, nsfw) => {
   else return Promise.resolve(mainMenu(client, config, lang))
 }
 
+// **************************
+// *        Edit part       *
+// **************************
 /**
  * EDIT MENU
  * @param {Client} client 
@@ -292,6 +295,10 @@ const menuLanguage = async (client, config, lang) => {
 
   return Promise.resolve(menuEdit(client, config, lang));
 }
+
+// **************************
+// *       Ignore part      *
+// **************************
 
 /**
  * IGNORE FOLDER MENU

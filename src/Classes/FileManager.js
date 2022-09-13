@@ -3,7 +3,10 @@ import LanguageHandler from './LanguageHandler.js';
 import consola from 'consola';
 import { rename, readdir, rm } from 'fs/promises'
 import sharp from 'sharp';
+import ConfigHandler from './Confighandler.js';
+import { TextChannel } from 'discord.js';
 
+/** Files manager to manage a list of files  */
 export default class FileManager {
 
   type;
@@ -12,6 +15,11 @@ export default class FileManager {
   abortedFiles;
   config;
 
+  /**
+   * 
+   * @param {string} type 
+   * @param {ConfigHandler} config 
+   */
   constructor(type, config) {
     this.type = type;
     this.files = [];
@@ -27,6 +35,7 @@ export default class FileManager {
 
   /**
    * @param {LanguageHandler} lang
+   * @return {string[]}
    */
   async initializeFiles(lang) {
 
@@ -51,6 +60,11 @@ export default class FileManager {
     return this.files;
   }
 
+  /**
+   * Compressing the files with Sharp
+   * @param {string} filepath 
+   * @returns {sharp.Sharp}
+   */
   async compressFile(filepath) {
     const filename = path.basename(filepath);
 
@@ -98,6 +112,11 @@ export default class FileManager {
     consola.success(lang.getText('fileSendedSuccessfully', this.files.length, channel.name, guild.name))
   }
 
+  /**
+   * Manage aborted files who cannot be sent
+   * @param {TextChannel} channel - Discord server text channel
+   * @parma {LanguageHandler} lang
+   */
   async sendAbortedFiles(channel, lang) {
     if(this.abortedFiles.length > 1) consola.error(lang.getText('abortFiles', this.abortedFiles.length))
     if(this.abortedFiles.length === 1) consola.error(lang.getText('abortFile', this.abortedFiles.length))
@@ -122,10 +141,19 @@ export default class FileManager {
     }
   }
 
+  /**
+   * @param {string} source 
+   * @returns {string[]}
+   */
   async getDirectories(source) {
     return (await readdir(source, { withFileTypes: true})).filter(dirent => dirent.isDirectory()).map(dirent => dirent.name)
   }
 
+  /**
+   * 
+   * @param {string} source 
+   * @returns {string[]}
+   */
   async getFiles(source) {
     return (await readdir(source, { withFileTypes: true})).filter(dirent => !dirent.isDirectory()).map(dirent => dirent.name);
   }

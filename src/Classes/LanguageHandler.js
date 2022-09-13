@@ -1,6 +1,8 @@
 import { readdir, readFile } from 'fs/promises';
 import path from 'path';
+import LanguageHandler from './LanguageHandler.js';
 
+/** Multi-language support class */
 export default class LanguageHandler {
 
   language;
@@ -16,6 +18,11 @@ export default class LanguageHandler {
     this.languagePacks = languagePacks;
   }
 
+  /**
+   * Static instantiation method
+   * @param {LanguageHandler} lang 
+   * @returns {LanguageHandler}
+   */
   static async initTranslations(lang) {
     this.language = lang;
     
@@ -31,6 +38,12 @@ export default class LanguageHandler {
     return new LanguageHandler(this.language, lPack);
   }
 
+  /**
+   * Return the text in the language specificied in the config
+   * @param {string} string 
+   * @param  {...string} vars 
+   * @returns {string}
+   */
   getText(string, ...vars) {
     let sentence = this.languagePacks[this.language][string];
     let count = 0;

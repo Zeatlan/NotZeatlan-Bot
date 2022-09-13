@@ -20,17 +20,18 @@ TOKEN=YOUR_DISCORD_BOT_TOKEN
 
 * If you have multiple server and you don't want it to post your images everywhere just put the guild ID to ignore in the `ignoredGuilds` variables.
 
-* Edit the `config.js` 
+* You can edit `config.json` directly in the CLI.
   * `SFW_FOLDER` and `NSFW_FOLDER` are where the bot will look for images.
 
   * `SFW_BIN` and `NSFW_BIN` are where the files who couldn't be uploaded will be placed. (Instead of deleting them)
 
-  * `SFW_NAME` and `NSFW_NAME` are the names of your respective channels.
+  * `SFW_NAME` and `NSFW_NAME` are the names of your respective discord channels.
 
   * `LANGUAGE` to change the language of the bot.
 
+* If you just want to send SFW or NSFW images, you can just ignore one of these.
 
-And... that's it ! Now, when you want to upload automatically just run `npm run start` and just wait. 😎
+And... that's it ! Now, when you want to upload automatically just run `npm run start` and send your images. 😎
 
 ## Important
 **This project was created for personnal purposes**, you can use it if you want but this wasn't intended to be used by anyone else than me !
@@ -60,7 +61,7 @@ Just note that your folders architecture should look like :
 
 The bot will look in the first folder he found (In this example, he will look onto the folder named `📂 0000`).
 
-> 📂 Folders name aren't important for this to work.
+> 📂 The folder names are not important for this to work.
 
 ---
 ### ⚠️ CAREFUL, THE BOT WILL DELETE THE FOLDER (in this example, `0000`) WHEN HE HAS FINISHED HIS JOB ⚠️

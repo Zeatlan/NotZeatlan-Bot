@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'fs/promises'
 
+/** Handle all configs */
 export default class ConfigHandler {
-
   ignoredGuilds;
   ignoredFolder;
 
@@ -16,6 +16,18 @@ export default class ConfigHandler {
 
   LANGUAGE;
 
+  /**
+   * 
+   * @param {string[]} ignoredGuilds - Array of guild ID
+   * @param {string} ignoredFolder 
+   * @param {string} sfwFolder 
+   * @param {string} nsfwFolder 
+   * @param {string} sfwBin 
+   * @param {string} nsfwBin 
+   * @param {string} sfwName - SFW Channel name
+   * @param {string} nsfwName - NSFW Channel name
+   * @param {string} lang 
+   */
   constructor(ignoredGuilds, ignoredFolder, sfwFolder, nsfwFolder, sfwBin, nsfwBin, sfwName, nsfwName, lang) {
     this.ignoredGuilds = ignoredGuilds;
     this.ignoredFolder = ignoredFolder;
@@ -27,6 +39,7 @@ export default class ConfigHandler {
     this.NSFW_NAME = nsfwName;
     this.LANGUAGE = lang;
   }
+
 
   static async init() {
     try {
@@ -47,6 +60,10 @@ export default class ConfigHandler {
     return new ConfigHandler(this.ignoredGuilds, this.ignoredFolder, this.SFW_FOLDER, this.NSFW_FOLDER, this.SFW_BIN, this.NSFW_BIN, this.SFW_NAME, this.NSFW_NAME, this.LANGUAGE)
   }
 
+  /**
+   * Update config.json
+   * @param {Object} data 
+   */
   async parseJson(data) {
     writeFile('./src/config.json', JSON.stringify(data));
   }

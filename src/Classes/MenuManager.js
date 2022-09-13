@@ -1,5 +1,6 @@
 import inquirer from 'inquirer'
 
+/** Inquirer menu generator */
 export default class MenuManager {
   type = 'list';
   name = '';
@@ -8,6 +9,13 @@ export default class MenuManager {
 
   answer;
 
+  /**
+   * 
+   * @param {string} type 
+   * @param {string} name 
+   * @param {string} message 
+   * @param {string[]} choices 
+   */
   constructor(type, name, message, choices) {
     this.type = type;
     this.name = name;
@@ -16,6 +24,10 @@ export default class MenuManager {
     this.answer = null;
   }
 
+  /**
+   * Generating menu
+   * @returns {string}
+   */
   async handleMenu() {
     console.log();
     this.answer = await inquirer.prompt([

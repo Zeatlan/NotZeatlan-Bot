@@ -50,6 +50,12 @@ const isChannelMissing = (server, channel, type) => {
 // **************************
 // *       Files part       *
 // **************************
+/**
+ * First initialization of the folders before confirmation
+ * @param {Client} client - Discord Client
+ * @param {ConfigHandler} config 
+ * @param {LanguageHandler} lang 
+ */
 export const initFiles = async (client, config, lang) => {
   let sfw, nsfw;
   if(config.ignoredFolder !== 'SFW') {
@@ -65,6 +71,12 @@ export const initFiles = async (client, config, lang) => {
   await confirm(client, config, lang, sfw, nsfw)
 }
 
+/**
+ * Send images then delete folder
+ * @param {FileManager} sfw 
+ * @param {FileManager} nsfw 
+ * @returns 
+ */
 export const preparingFiles = async (sfw, nsfw) => {
   if(config.ignoredFolder !== 'SFW') {
     await sfw.initializeFiles(lang);
