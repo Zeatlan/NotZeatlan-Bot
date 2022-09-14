@@ -41,5 +41,6 @@
   "finished": "🤖 Daily task accomplished 🚀",
   "backToMenu": "Back to main menu",
   "backToEdit": "Back to parameters",
-  "goodBye": "👋 Closing program, see you next time"
+  "goodBye": "👋 Closing program, see you next time",
+  "compressionError": "Cannot find %VAR%, still processing..."
 }

@@ -1,6 +1,6 @@
 {
   "name": "notzeatlan-bot",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Discord bot to send images automatically on servers.",
   "main": "src/main.js",
   "scripts": {

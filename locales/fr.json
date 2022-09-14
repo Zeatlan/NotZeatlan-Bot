@@ -41,5 +41,6 @@
   "finished": "🤖 Mission du jour accomplie 🚀",
   "backToMenu": "Retour au menu principal",
   "backToEdit": "Retour aux paramètres",
-  "goodBye": "👋 Fermeture du programme, à la prochaine"
+  "goodBye": "👋 Fermeture du programme, à la prochaine",
+  "compressionError": "%VAR% introuvable, processus toujours en cours..."
 }

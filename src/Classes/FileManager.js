@@ -57,9 +57,13 @@ export default class FileManager {
     }
 
     for(const compressed of compressedFiles) {
-      const searchFile = path.resolve(this.folder, `${compressed.name}-compressed.jpeg`);
+      try {
+        const searchFile = path.resolve(this.folder, `${compressed.name}-compressed.jpeg`);
 
-      this.files.push({...compressed, path: searchFile})
+        this.files.push({...compressed, path: searchFile})
+      }catch(e) {
+        consola.error(lang.getText('compressionError', compressed))
+      }
     }
 
     return this.files;
@@ -71,7 +75,7 @@ export default class FileManager {
    * @returns {sharp.Sharp}
    */
   async compressFile(filepath) {
-    const filename = path.basename(filepath);
+    const filename = path.parse(path.basename(filepath)).name
 
     try {
       let compressed = await sharp(filepath).toFormat("jpeg", { mozjpeg: true }).toFile(`${this.folder}\\${filename}-compressed.jpeg`)
