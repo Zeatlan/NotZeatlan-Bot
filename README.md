@@ -1,8 +1,8 @@
 # NotZeatlan Bot
 
-NotZeatlan Bot is a Discord bot created with [DiscordJS](https://github.com/discordjs/discord.js/). His main (and only) purpose is to post images on designated channels automatically.
+NotZeatlan Bot is a Discord bot created with [DiscordJS](https://github.com/discordjs/discord.js/). His main (and only) purpose is to post images on designated Discord's channels automatically.
 
-This bot was not intended to be used by others than me but feel free to use it if you want.
+This bot was not intended to be used by others than me, but feel free to use it if you want.
 
 ## Installation
 Just install the packages with
@@ -34,9 +34,9 @@ TOKEN=YOUR_DISCORD_BOT_TOKEN
 And... that's it ! Now, when you want to upload automatically just run `npm run start` and send your images. 😎
 
 ## Important
-**This project was created for personnal purposes**, you can use it if you want but this wasn't intended to be used by anyone else than me !
+**This project was created for personal purposes**, you can use it if you want, but this wasn't intended to be used by anyone else than me !
 
-Just note that your folders architecture should look like :
+Just note that your folder's architecture should look like :
 
 ```
 📂 (N)SFW FOLDER
@@ -59,12 +59,12 @@ Just note that your folders architecture should look like :
 └─── 📂 ..
 ```
 
-The bot will look in the first folder he found (In this example, he will look onto the folder named `📂 0000`).
+The bot will look in the first folder he find (In this example, he will be looking into the folder named `📂 0000`).
 
 > 📂 The folder names are not important for this to work.
 
 ---
-### ⚠️ CAREFUL, THE BOT WILL DELETE THE FOLDER (in this example, `0000`) WHEN HE HAS FINISHED HIS JOB ⚠️
+### ⚠️ CAREFUL, THE BOT WILL DELETE THE FOLDER (in this example, `0000`) WHEN HE HAS FINISHED HIS TASK ⚠️
 ---
 
 ## Licence
