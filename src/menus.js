@@ -191,7 +191,9 @@ const menuFolders = async (client, config, lang) => {
   const sfwFolder = await new MenuManager(
     'input',
     'sfw',
-    lang.getText('editFoldersTextSFW')
+    lang.getText('editFoldersTextSFW'),
+    [],
+    config.SFW_FOLDER
   ).handleMenu();
 
   if(sfwFolder !== '') {
@@ -201,7 +203,9 @@ const menuFolders = async (client, config, lang) => {
   const nsfwFolder = await new MenuManager(
     'input',
     'nsfw',
-    lang.getText('editFoldersTextNSFW')
+    lang.getText('editFoldersTextNSFW'),
+    [],
+    config.NSFW_FOLDER
   ).handleMenu();
 
   if(nsfwFolder !== '') {
@@ -222,7 +226,9 @@ const menuBins = async (client, config, lang) => {
   const sfwBin = await new MenuManager(
     'input',
     'sfw',
-    lang.getText('editBinsTextSFW')
+    lang.getText('editBinsTextSFW'),
+    [],
+    config.SFW_BIN
   ).handleMenu();
 
   if(sfwBin !== '') {
@@ -232,7 +238,9 @@ const menuBins = async (client, config, lang) => {
   const nsfwBin = await new MenuManager(
     'input',
     'nsfw',
-    lang.getText('editBinsTextNSFW')
+    lang.getText('editBinsTextNSFW'),
+    [],
+    config.NSFW_FOLDER
   ).handleMenu();
 
   if(nsfwBin !== '') {
@@ -253,7 +261,9 @@ const menuChannels = async (client, config, lang) => {
   const sfwChannel = await new MenuManager(
     'input',
     'sfw',
-    lang.getText('editChannelsTextSFW')
+    lang.getText('editChannelsTextSFW'),
+    [],
+    config.SFW_NAME
   ).handleMenu();
 
   if(sfwChannel !== '') {
@@ -263,7 +273,9 @@ const menuChannels = async (client, config, lang) => {
   const nsfwChannel = await new MenuManager(
     'input',
     'nsfw',
-    lang.getText('editChannelsTextNSFW')
+    lang.getText('editChannelsTextNSFW'),
+    [],
+    config.NSFW_NAME
   ).handleMenu();
 
   if(nsfwChannel !== '') {

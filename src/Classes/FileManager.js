@@ -29,8 +29,13 @@ export default class FileManager {
   }
 
   async initializeFolder() {
-    const searchFolder = await this.getDirectories(this.folder);
-    this.folder = path.resolve(this.folder, searchFolder[0]);
+    try {
+      const searchFolder = await this.getDirectories(this.folder);
+      this.folder = path.resolve(this.folder, searchFolder[0]);
+    }catch(e) {
+      // No directory found
+      return Promise.reject(e);
+    }
   }
 
   /**

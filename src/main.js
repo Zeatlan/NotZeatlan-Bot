@@ -60,12 +60,18 @@ export const initFiles = async (client, config, lang) => {
   let sfw, nsfw;
   if(config.ignoredFolder !== 'SFW') {
     sfw = new FileManager('sfw', config);
-    await sfw.initializeFolder();
+    await sfw.initializeFolder().catch(e => {
+      consola.error(e);
+      return Promise.resolve(mainMenu(client, config, lang))
+    })
   }
 
   if(config.ignoredFolder !== 'NSFW') {
     nsfw = new FileManager('nsfw', config);
-    await nsfw.initializeFolder();
+    await nsfw.initializeFolder().catch(async (e) => {
+      consola.error(e);
+      return Promise.resolve(mainMenu(client, config, lang))
+    });
   }
 
   await confirm(client, config, lang, sfw, nsfw)

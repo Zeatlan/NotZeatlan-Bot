@@ -6,6 +6,7 @@ export default class MenuManager {
   name = '';
   message = '';
   choices = [];
+  default = '';
 
   answer;
 
@@ -16,11 +17,12 @@ export default class MenuManager {
    * @param {string} message 
    * @param {string[]} choices 
    */
-  constructor(type, name, message, choices) {
+  constructor(type, name, message, choices = [], defaultValue = '') {
     this.type = type;
     this.name = name;
     this.message = message;
     this.choices = choices;
+    this.default = defaultValue;
     this.answer = null;
   }
 
@@ -35,7 +37,8 @@ export default class MenuManager {
         type: this.type,
         name: this.name,
         message: this.message,
-        choices: this.choices
+        choices: this.choices,
+        default: this.default
       }
     ])
 
