@@ -1,6 +1,5 @@
 import { readdir, readFile } from 'fs/promises';
 import path from 'path';
-import LanguageHandler from './LanguageHandler.js';
 
 /** Multi-language support class */
 export default class LanguageHandler {
@@ -20,7 +19,7 @@ export default class LanguageHandler {
 
   /**
    * Static instantiation method
-   * @param {LanguageHandler} lang 
+   * @param {string} lang 
    * @returns {LanguageHandler}
    */
   static async initTranslations(lang) {
