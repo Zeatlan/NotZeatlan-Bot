@@ -114,7 +114,7 @@ export default class FileManager {
     }
 
     if(this.abortedFiles.length > 0) {
-      await this.sendAbortedFiles(channel, lang);
+      await this.sendAbortedFiles(channel, lang, count);
     }
 
     console.log();
@@ -126,7 +126,7 @@ export default class FileManager {
    * @param {TextChannel} channel - Discord server text channel
    * @parma {LanguageHandler} lang
    */
-  async sendAbortedFiles(channel, lang) {
+  async sendAbortedFiles(channel, lang, count) {
     if(this.abortedFiles.length > 1) consola.error(lang.getText('abortFiles', this.abortedFiles.length))
     if(this.abortedFiles.length === 1) consola.error(lang.getText('abortFile', this.abortedFiles.length))
 
