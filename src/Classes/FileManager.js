@@ -5,7 +5,6 @@ import { rename, readdir, rm } from 'fs/promises'
 import sharp from 'sharp';
 import ConfigHandler from './Confighandler.js';
 import { TextChannel } from 'discord.js';
-import { info } from 'console';
 
 /** Files manager to manage a list of files  */
 export default class FileManager {
