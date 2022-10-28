@@ -5,6 +5,7 @@ import { rename, readdir, rm } from 'fs/promises'
 import sharp from 'sharp';
 import ConfigHandler from './Confighandler.js';
 import { TextChannel } from 'discord.js';
+import { info } from 'console';
 
 /** Files manager to manage a list of files  */
 export default class FileManager {
@@ -58,7 +59,7 @@ export default class FileManager {
 
     for(const compressed of compressedFiles) {
       try {
-        const searchFile = path.resolve(this.folder, `${compressed.name}-compressed.jpeg`);
+        const searchFile = path.resolve(this.folder, `${compressed.file.name}-compressed.jpeg`);
 
         this.files.push({...compressed, path: searchFile})
       }catch(e) {
@@ -72,10 +73,13 @@ export default class FileManager {
   /**
    * Compressing the files with Sharp
    * @param {string} filepath 
-   * @returns {sharp.Sharp}
+   * @returns {sharp.Sharp, Object }
    */
   async compressFile(filepath) {
     const filename = path.parse(path.basename(filepath)).name
+
+    // Search file source
+    const source = this.findSource(filename)
 
     try {
       let compressed = await sharp(filepath).toFormat("jpeg", { mozjpeg: true }).toFile(`${this.folder}\\${filename}-compressed.jpeg`)
@@ -83,10 +87,45 @@ export default class FileManager {
       await rm(filepath)
       compressed.name = filename;
 
-      return compressed;
+      return { file: compressed, source };
     }catch(error) {
       consola.error(`${error}`);
     }
+  }
+
+  /**
+   * Find source artist
+   * @param {string} filename 
+   * @returns { string, string }
+   */
+  findSource(filename) {
+    const nameArray = filename.split('-')
+    let website = '';
+    let artist = '';
+
+    if(nameArray.length > 2) {
+      website = nameArray[0].toLowerCase();
+
+      if(website === 'twitter') {
+        artist = nameArray[1];
+      }
+
+      if(website === 'konachan.com' || website === 'konachan') {
+        artist = nameArray[1];
+      }
+    }else {
+      if(nameArray[0] === 'Konachan.com') return { website: '', artist: '' }
+
+      const deletedId = filename.split('__')
+      if(deletedId.length === 1) return { website: '', artist: '' }
+
+      const splitedName = deletedId[1].split('drawn_by_');
+      artist = splitedName[1].replaceAll('_', ' ');
+
+      website = 'Danbooru';
+    }
+
+    return { website, artist }
   }
 
   /**
@@ -104,7 +143,14 @@ export default class FileManager {
       this.printLoading(this.files, file, count);
 
       try {
-        await channel.send({ files: [file.path] });
+        if(file.source.website !== '' && file.source.artist !== '') {
+          await channel.send({ 
+            content: `🙏 Source **${file.source.website}**: \`${file.source.artist}\``,
+            files: [file.path] 
+          });
+        }else {
+          await channel.send({ files: [file.path] })
+        }
       }catch(err) {
         this.abortedFiles.push(file);
       }
@@ -175,14 +221,14 @@ export default class FileManager {
    */
   printLoading (files, file, count) {
     let filesize;
-    const str = (file.size).toString();
+    const str = (file.file.size).toString();
 
-    if(file.size > 99999 && file.size < 1000000) {
+    if(file.file.size > 99999 && file.file.size < 1000000) {
       filesize = str.slice(0, -3) + ' Ko';
-    }else if(file.size > 999999) {
+    }else if(file.file.size > 999999) {
       filesize = str.slice(0, -6) + '.' + str.slice(1, -3) + ' Mo';
     }
 
-    process.stdout.write(`\r\x1b[0m[${'*'.repeat(count)}${' '.repeat(files.length-count)}] ${count}/${files.length}  \x1b[32m${file.name}\x1b[89m  \x1b[33m${filesize}\x1b[89m\x1b[0m`)
+    process.stdout.write(`\r\x1b[0m[${'*'.repeat(count)}${' '.repeat(files.length-count)}] ${count}/${files.length}  \x1b[32m${file.file.name}\x1b[89m  \x1b[33m${filesize}\x1b[89m\x1b[0m`)
   }
 }
