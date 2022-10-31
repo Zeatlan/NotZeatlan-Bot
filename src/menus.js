@@ -149,7 +149,7 @@ const menuIgnoredGuilds = async (client, config, lang) => {
     await config.parseJson(config);
   }
 
-  return Promise.resolve(menuIgnoredGuilds(client, config, lang));
+  // return Promise.resolve(menuIgnoredGuilds(client, config, lang));
 
 }
 
