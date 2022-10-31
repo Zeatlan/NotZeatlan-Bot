@@ -124,5 +124,5 @@ export const preparingFiles = async (sfw, nsfw) => {
 
   // See you next time ❤
   consola.success(lang.getText('finished'))
-  client.destroy();
+  process.exit();
 }

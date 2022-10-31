@@ -40,7 +40,7 @@ export const mainMenu = async (client, config, lang) => {
   // Quit
   if(menuChoice === `\x1b[31m${lang.getText('quit')}\x1b[0m`) {
     console.log('\x1b[33m'+lang.getText('goodBye')+'\x1b[0m');
-    client.destroy();
+    process.exit();
   }
 }
 
@@ -148,8 +148,6 @@ const menuIgnoredGuilds = async (client, config, lang) => {
     config.ignoredGuilds.splice(idx, 1);
     await config.parseJson(config);
   }
-
-  // return Promise.resolve(menuIgnoredGuilds(client, config, lang));
 
 }
 
