@@ -121,7 +121,7 @@ export default class FileManager {
       const splitedName = deletedId[1].split('drawn_by_');
       artist = splitedName[1].replaceAll('_', ' ');
 
-      website = 'Danbooru';
+      website = 'danbooru';
     }
 
     return { website, artist }
@@ -141,10 +141,20 @@ export default class FileManager {
     for(let file of this.files){
       this.printLoading(this.files, file, count);
 
+      // INFO
+      // 🐦  =    twitter
+      // 🌐   =    danbooru
+      // 🙏  =    konachan
+      const websiteIcon = {
+        twitter: '🐦',
+        danbooru: '🌐',
+        konachan: '🙏'
+      };
+
       try {
         if(file.source.website !== '' && file.source.artist !== '') {
           await channel.send({ 
-            content: `🙏 Source **${file.source.website}**: \`${file.source.artist}\``,
+            content: `${websiteIcon[file.source.website]} Source **${file.source.website}**: \`${file.source.artist}\``,
             files: [file.path] 
           });
         }else {
