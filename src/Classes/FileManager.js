@@ -189,16 +189,9 @@ export default class FileManager {
       count = 0;
       this.printLoading(this.abortedFiles, aborted, count);
 
-      try {
-        await channel.send({ files: [aborted.path] });
-        this.abortedFiles.slice(this.abortedFiles.indexOf(aborted), 1);
-      }catch(err) {
-        consola.error(lang.getText('cantSendFile', aborted.name))
-
-        if(this.type === 'sfw') await rename(aborted.path, this.config.SFW_BIN + '\\' + aborted.name + '.' + aborted.format)
-        else if(this.type === 'nsfw') await rename(aborted.path, this.config.NSFW_BIN + '\\' + aborted.name + '.' + aborted.format)
-        this.abortedFiles.slice(this.abortedFiles.indexOf(aborted), 1);
-      }
+      if(this.type === 'sfw') await rename(aborted.path, this.config.SFW_BIN + '\\' + aborted.name + '.' + aborted.format);
+      else if(this.type === 'nsfw') await rename(aborted.path, this.config.NSFW_BIN + '\\' + aborted.name + '.' + aborted.format);
+      this.abortedFiles.slice(this.abortedFiles.indexOf(aborted), 1);
 
       count++;
       this.printLoading(this.abortedFiles, aborted, count);
