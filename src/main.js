@@ -61,7 +61,7 @@ export const initFiles = async (client, config, lang) => {
   if(config.ignoredFolder !== 'SFW') {
     sfw = new FileManager('sfw', config);
     await sfw.initializeFolder().catch(e => {
-      consola.error(e);
+      consola.error("No folder found for SFW.");
       return Promise.resolve(mainMenu(client, config, lang))
     })
   }
@@ -69,7 +69,7 @@ export const initFiles = async (client, config, lang) => {
   if(config.ignoredFolder !== 'NSFW') {
     nsfw = new FileManager('nsfw', config);
     await nsfw.initializeFolder().catch(async (e) => {
-      consola.error(e);
+      consola.error("No folder found for NSFW.");
       return Promise.resolve(mainMenu(client, config, lang))
     });
   }
