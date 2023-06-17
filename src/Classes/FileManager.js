@@ -32,7 +32,7 @@ export default class FileManager {
     try {
       const searchFolder = await this.getDirectories(this.folder);
       this.folder = path.resolve(this.folder, searchFolder[0]);
-    }catch(e) {
+    } catch (e) {
       // No directory found
       return Promise.reject(e);
     }
@@ -45,10 +45,10 @@ export default class FileManager {
   async initializeFiles(lang) {
 
     const searchFiles = await this.getFiles(this.folder);
-    
+
     const compressedFiles = [];
 
-    for(const file of searchFiles) {
+    for (const file of searchFiles) {
       const filepath = path.resolve(this.folder, file);
 
       console.log();
@@ -56,12 +56,12 @@ export default class FileManager {
       compressedFiles.push(await this.compressFile(filepath));
     }
 
-    for(const compressed of compressedFiles) {
+    for (const compressed of compressedFiles) {
       try {
         const searchFile = path.resolve(this.folder, `${compressed.file.name}-compressed.jpeg`);
 
-        this.files.push({...compressed, path: searchFile})
-      }catch(e) {
+        this.files.push({ ...compressed, path: searchFile })
+      } catch (e) {
         consola.error(lang.getText('compressionError', compressed))
       }
     }
@@ -87,7 +87,7 @@ export default class FileManager {
       compressed.name = filename;
 
       return { file: compressed, source };
-    }catch(error) {
+    } catch (error) {
       consola.error(`${error}`);
     }
   }
@@ -102,23 +102,23 @@ export default class FileManager {
     let website = '';
     let artist = '';
 
-    if(nameArray.length > 2) {
+    if (nameArray.length > 2) {
       website = nameArray[0].toLowerCase();
 
-      if(website === 'twitter') {
+      if (website === 'twitter') {
         artist = nameArray[1];
       }
 
-      if(website === 'konachan.com' || website === 'konachan') {
+      if (website === 'konachan.com' || website === 'konachan') {
         artist = nameArray[1];
       }
-    }else {
-      if(nameArray[0] === 'Konachan.com') return { website: '', artist: '' }
+    } else {
+      if (nameArray[0] === 'Konachan.com') return { website: '', artist: '' }
 
-      const deletedId = filename.split('__')
-      if(deletedId.length === 1) return { website: '', artist: '' }
+      const deletedId = filename.split('__');
+      if (deletedId.length === 1) return { website: '', artist: '' }
 
-      const splitedName = deletedId[1].split('drawn_by_');
+      const splitedName = deletedId[0].split('drawn_by_');
       artist = splitedName[1].replaceAll('_', ' ');
 
       website = 'danbooru';
@@ -132,13 +132,13 @@ export default class FileManager {
    * @param {Guild} guild - Server to send the file to
    * @param {TextChannel} channel - Channel to send the file to
    */
-  async sendFiles (guild, channel, lang) {
+  async sendFiles(guild, channel, lang) {
     let count = 0;
 
     console.log();
     consola.info(lang.getText('sending', this.type))
-    
-    for(let file of this.files){
+
+    for (let file of this.files) {
       this.printLoading(this.files, file, count);
 
       // INFO
@@ -152,15 +152,15 @@ export default class FileManager {
       };
 
       try {
-        if(file.source.website !== '' && file.source.artist !== '') {
-          await channel.send({ 
+        if (file.source.website !== '' && file.source.artist !== '') {
+          await channel.send({
             content: `${websiteIcon[file.source.website]} Source **${file.source.website}**: \`${file.source.artist}\``,
-            files: [file.path] 
+            files: [file.path]
           });
-        }else {
+        } else {
           await channel.send({ files: [file.path] })
         }
-      }catch(err) {
+      } catch (err) {
         this.abortedFiles.push(file);
       }
 
@@ -168,7 +168,7 @@ export default class FileManager {
       this.printLoading(this.files, file, count);
     }
 
-    if(this.abortedFiles.length > 0) {
+    if (this.abortedFiles.length > 0) {
       await this.sendAbortedFiles(channel, lang, count);
     }
 
@@ -182,15 +182,15 @@ export default class FileManager {
    * @parma {LanguageHandler} lang
    */
   async sendAbortedFiles(channel, lang, count) {
-    if(this.abortedFiles.length > 1) consola.error(lang.getText('abortFiles', this.abortedFiles.length))
-    if(this.abortedFiles.length === 1) consola.error(lang.getText('abortFile', this.abortedFiles.length))
+    if (this.abortedFiles.length > 1) consola.error(lang.getText('abortFiles', this.abortedFiles.length))
+    if (this.abortedFiles.length === 1) consola.error(lang.getText('abortFile', this.abortedFiles.length))
 
-    for(let aborted of this.abortedFiles) {
+    for (let aborted of this.abortedFiles) {
       count = 0;
       this.printLoading(this.abortedFiles, aborted, count);
 
-      if(this.type === 'sfw') await rename(aborted.path, this.config.SFW_BIN + '\\' + aborted.name + '.' + aborted.format);
-      else if(this.type === 'nsfw') await rename(aborted.path, this.config.NSFW_BIN + '\\' + aborted.name + '.' + aborted.format);
+      if (this.type === 'sfw') await rename(aborted.path, this.config.SFW_BIN + '\\' + aborted.name + '.' + aborted.format);
+      else if (this.type === 'nsfw') await rename(aborted.path, this.config.NSFW_BIN + '\\' + aborted.name + '.' + aborted.format);
       this.abortedFiles.slice(this.abortedFiles.indexOf(aborted), 1);
 
       count++;
@@ -203,7 +203,7 @@ export default class FileManager {
    * @returns {string[]}
    */
   async getDirectories(source) {
-    return (await readdir(source, { withFileTypes: true})).filter(dirent => dirent.isDirectory()).map(dirent => dirent.name)
+    return (await readdir(source, { withFileTypes: true })).filter(dirent => dirent.isDirectory()).map(dirent => dirent.name)
   }
 
   /**
@@ -212,7 +212,7 @@ export default class FileManager {
    * @returns {string[]}
    */
   async getFiles(source) {
-    return (await readdir(source, { withFileTypes: true})).filter(dirent => !dirent.isDirectory()).map(dirent => dirent.name);
+    return (await readdir(source, { withFileTypes: true })).filter(dirent => !dirent.isDirectory()).map(dirent => dirent.name);
   }
 
   /**
@@ -221,16 +221,16 @@ export default class FileManager {
    * @param {Object} file - Loading file
    * @param {number} count - Counting iterations
    */
-  printLoading (files, file, count) {
+  printLoading(files, file, count) {
     let filesize;
     const str = (file.file.size).toString();
 
-    if(file.file.size > 99999 && file.file.size < 1000000) {
+    if (file.file.size > 99999 && file.file.size < 1000000) {
       filesize = str.slice(0, -3) + ' Ko';
-    }else if(file.file.size > 999999) {
+    } else if (file.file.size > 999999) {
       filesize = str.slice(0, -6) + '.' + str.slice(1, -3) + ' Mo';
     }
 
-    process.stdout.write(`\r\x1b[0m[${'*'.repeat(count)}${' '.repeat(files.length-count)}] ${count}/${files.length}  \x1b[32m${file.file.name}\x1b[89m  \x1b[33m${filesize}\x1b[89m\x1b[0m`)
+    process.stdout.write(`\r\x1b[0m[${'*'.repeat(count)}${' '.repeat(files.length - count)}] ${count}/${files.length}  \x1b[32m${file.file.name}\x1b[89m  \x1b[33m${filesize}\x1b[89m\x1b[0m`)
   }
 }
