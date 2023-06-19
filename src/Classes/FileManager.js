@@ -115,7 +115,7 @@ export default class FileManager {
     } else {
       if (nameArray[0] === 'Konachan.com') return { website: '', artist: '' }
 
-      const deletedId = filename.split('__');
+      const deletedId = filename.split('__').filter(n => n);
       if (deletedId.length === 1) return { website: '', artist: '' }
 
       const splitedName = deletedId[0].split('drawn_by_');
