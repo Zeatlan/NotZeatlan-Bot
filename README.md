@@ -1,4 +1,4 @@
-# NotZeatlan Bot
+# NotZeatlan Bot v1.0
 
 NotZeatlan Bot is a Discord bot created with [DiscordJS](https://github.com/discordjs/discord.js/). His main (and only) purpose is to post images on designated Discord's channels automatically.
 
